@@ -413,7 +413,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.15471, y: -0.50776, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100, y: 100, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1193165855411283063}
@@ -431,7 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52857689809c443d5adeed65d28ac8b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DigestQuest.CardDisplay
-  card: {fileID: 0}
+  card: {fileID: 11400000, guid: 487743e52b4d8451b9b376e18ec717be, type: 2}
   cardImage: {fileID: 0}
   nameText: {fileID: 738283604606873270}
   descriptionText: {fileID: 0}
