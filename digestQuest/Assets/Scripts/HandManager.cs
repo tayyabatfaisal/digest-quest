@@ -6,6 +6,8 @@ namespace DigestQuest
     public class HandManager : MonoBehaviour
     {
 
+        public int maxHandSize = 5; //5 cards in a hand at a time
+
         public DeckManager deckManager;
 
         public GameObject cardPrefab;
@@ -27,6 +29,13 @@ namespace DigestQuest
 
         public void AddCardToHand(Card cardData)
         {
+
+            if (cardsInHand.Count >= maxHandSize)
+            {
+                Debug.Log("Hand is full!");
+                return;
+            }
+
             GameObject newCard = Instantiate(cardPrefab, handTransform.position, Quaternion.identity, handTransform);
             cardsInHand.Add(newCard);
 
