@@ -17,6 +17,14 @@ namespace DigestQuest
 
             //add the loaded cards to the allCards list
             allCards.AddRange(cards);
+
+
+            HandManager hand = FindObjectOfType<HandManager>();
+
+            for (int i = 0; i < 6; i++)
+            {
+                DrawCard(hand);
+            }
         }
 
         public void DrawCard(HandManager handManager)
