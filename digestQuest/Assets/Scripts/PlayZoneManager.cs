@@ -35,5 +35,12 @@ namespace DigestQuest
                 Destroy(card);
             cardsInPlay.Clear();
         }
+
+        public void RemoveCardFromPlay(GameObject card)
+        {
+            if (cardsInPlay.Contains(card))
+                cardsInPlay.Remove(card);
+        }
+
     }
 }

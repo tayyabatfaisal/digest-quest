@@ -10,10 +10,10 @@ namespace DigestQuest
 
         public DeckManager deckManager;
 
-        public GameObject cardPrefab;
+        public GameObject cardPrefab; //the prefab to instantiate when adding a new card to the hand
         public Transform handTransform;
 
-        public float cardSpacing = 375; // from trial and error on the game
+        public float cardSpacing = 3.5f; // Try 3.5, 4, or 5 for a little extra space
 
         public List<GameObject> cardsInHand = new List<GameObject>();
 
@@ -24,7 +24,7 @@ namespace DigestQuest
 
         void Update()
         {
-            
+
             //UpdateHandVisuals();
         }
 
@@ -40,10 +40,9 @@ namespace DigestQuest
             GameObject newCard = Instantiate(cardPrefab, handTransform.position, Quaternion.identity, handTransform); //make a game object to reference for UI
             //you need a gameobject for visuals 
             cardsInHand.Add(newCard);
-
-
             //set the cardData of the instantiated card
             newCard.GetComponent<CardDisplay>().card = cardData;
+            newCard.name = cardData.cardName;
 
             UpdateHandVisuals();
         }
@@ -56,21 +55,48 @@ namespace DigestQuest
             UpdateHandVisuals();
         }
 
-        public void UpdateHandVisuals() //the visual representation and spacing of the cards
+        public void UpdateHandVisuals()
         {
             int cardCount = cardsInHand.Count;
             if (cardCount == 0) return;
 
-            float totalWidth = (cardCount - 1) * cardSpacing;
-            Vector3 handCenter = handTransform.position;
+            // Start at the left edge of your hand area
+            Vector3 startPosition = handTransform.position; // This is your pre-set hand position
+            float xSpacing = cardSpacing;                   // Space between cards
 
             for (int i = 0; i < cardCount; i++)
             {
-                float xOffset = (i * cardSpacing) - (totalWidth / 2f);
-                Vector3 cardPos = handCenter + new Vector3(xOffset, 0, 0);
+                Vector3 cardPos = startPosition + new Vector3(i * xSpacing, 0, 0);
                 cardsInHand[i].transform.position = cardPos;
                 cardsInHand[i].transform.rotation = Quaternion.identity;
+                cardsInHand[i].transform.SetSiblingIndex(i); // Ensures draw order in UI
+            }
+
+            for (int i = 0; i < cardsInHand.Count; i++)
+            {
+                Debug.Log($"Hand [{i}]: {cardsInHand[i].name} at {cardsInHand[i].transform.position}");
             }
         }
+
+        public void AddExistingCardToHand(GameObject card)
+        {
+            if (cardsInHand.Count >= maxHandSize)
+            {
+                Debug.Log("Hand is full!");
+                return;
+            }
+
+            card.transform.SetParent(handTransform, false);
+            cardsInHand.Add(card); // add to end
+            card.transform.SetAsLastSibling(); // ensure it's drawn above others
+            Debug.Log($"this is the card that is coming back :   " + card.name);
+
+            // Reset local scale/rotation, if needed
+            card.transform.localScale = Vector3.one;
+            card.transform.localRotation = Quaternion.identity;
+
+            UpdateHandVisuals();
+        }
+
     }
 }
