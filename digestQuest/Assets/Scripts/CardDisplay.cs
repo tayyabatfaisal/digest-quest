@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 namespace DigestQuest
 {
-    public class CardDisplay : MonoBehaviour
+    public class CardDisplay : MonoBehaviour, IPointerClickHandler
     {
         public Card card;
 
@@ -34,6 +35,16 @@ namespace DigestQuest
             //add other card features below:
         }
 
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            Debug.Log($"the card has been clicked");
+            // Only allow play if in hand (you can add checks or state if needed)
+            PlayZoneManager playZone = FindObjectOfType<PlayZoneManager>();
+            HandManager handManager = FindObjectOfType<HandManager>();
+
+            playZone.PlayCard(this.gameObject);
+            handManager.RemoveCardFromHand(this.gameObject);
+        }
 
 
     }
