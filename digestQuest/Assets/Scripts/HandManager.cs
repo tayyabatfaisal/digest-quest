@@ -1,10 +1,15 @@
 using UnityEngine;
-using System.Collections.Generic; // You need this for List<T>
+using System.Collections.Generic;
 
 namespace DigestQuest
 {
     public class HandManager : MonoBehaviour
     {
+
+        public int maxHandSize = 5; //5 cards in a hand at a time
+
+        public DeckManager deckManager;
+
         public GameObject cardPrefab;
         public Transform handTransform;
 
@@ -14,26 +19,30 @@ namespace DigestQuest
 
         void Start()
         {
-
             handTransform.position = handTransform.position + new Vector3(-100f, -250f, 0f); // moves hand down by 50 units
-
-            AddCardToHand();
-            AddCardToHand();
-            AddCardToHand();
-            AddCardToHand();
-            AddCardToHand();
         }
 
         void Update()
         {
-
-            UpdateHandVisuals();
+            
+            //UpdateHandVisuals();
         }
 
-        public void AddCardToHand()
+        public void AddCardToHand(Card cardData)
         {
+
+            if (cardsInHand.Count >= maxHandSize)
+            {
+                Debug.Log("Hand is full!");
+                return;
+            }
+
             GameObject newCard = Instantiate(cardPrefab, handTransform.position, Quaternion.identity, handTransform);
             cardsInHand.Add(newCard);
+
+            //set the cardData of the instantiated card
+            newCard.GetComponent<CardDisplay>().card = cardData;
+
             UpdateHandVisuals();
         }
 
