@@ -37,8 +37,10 @@ namespace DigestQuest
                 return;
             }
 
-            GameObject newCard = Instantiate(cardPrefab, handTransform.position, Quaternion.identity, handTransform);
+            GameObject newCard = Instantiate(cardPrefab, handTransform.position, Quaternion.identity, handTransform); //make a game object to reference for UI
+            //you need a gameobject for visuals 
             cardsInHand.Add(newCard);
+
 
             //set the cardData of the instantiated card
             newCard.GetComponent<CardDisplay>().card = cardData;
@@ -46,7 +48,15 @@ namespace DigestQuest
             UpdateHandVisuals();
         }
 
-        public void UpdateHandVisuals()
+        public void RemoveCardFromHand(GameObject card) //it gets just the reference though?
+        {
+            if (cardsInHand.Contains(card))
+                cardsInHand.Remove(card);
+            // Optionally destroy or disable the card here, if needed
+            UpdateHandVisuals();
+        }
+
+        public void UpdateHandVisuals() //the visual representation and spacing of the cards
         {
             int cardCount = cardsInHand.Count;
             if (cardCount == 0) return;
