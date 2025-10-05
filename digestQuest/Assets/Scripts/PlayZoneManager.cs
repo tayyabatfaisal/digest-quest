@@ -9,7 +9,7 @@ namespace DigestQuest
     public class PlayZoneManager : MonoBehaviour
     {
         public Transform playZoneArea; //marks the area of the play zone 
-        public int maxCardsInPlay = 2;
+        public int maxCardsInPlay = 2; //set max cards to play into the play zone
         public List<GameObject> cardsInPlay = new List<GameObject>();
         public List<Card> cardsDataInPlay = new List<Card>();
 
