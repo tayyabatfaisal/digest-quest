@@ -213,9 +213,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1881977407}
   - {fileID: 148779616}
   - {fileID: 68438174}
+  - {fileID: 1881977407}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -903,7 +903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 714bdb750c6f54ea4b0ca5ff54cb3091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DigestQuest.PlayZoneManager
-  playButton: {fileID: 0}
+  playButton: {fileID: 68438175}
   playZoneArea: {fileID: 148779616}
   maxCardsInPlay: 2
   cardsInPlay: []
@@ -935,5 +935,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 606009859}
   - {fileID: 1296900058}
-  - {fileID: 65085036}
   - {fileID: 588229205}
+  - {fileID: 65085036}

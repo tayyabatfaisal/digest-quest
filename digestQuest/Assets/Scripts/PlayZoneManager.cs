@@ -19,7 +19,8 @@ namespace DigestQuest
 
         void Start()
         {
-            playButton.gameObject.SetActive(false); // Hide initially
+            // DO NOT hide the button on start
+            // playButton.gameObject.SetActive(false);
 
             if (deckManager == null) { //because the Game Manager instantiates the Deck manager, so I will just set it to the global one
                 deckManager = GameManager.Instance.DeckManager;
@@ -30,12 +31,12 @@ namespace DigestQuest
         {
             if (cardsInPlay.Count >= maxCardsInPlay) return;
 
-            Debug.Log("you have played the following card:" + card.name);
+            Debug.Log("you have decided to move this card to the playzone:" + card.name);
 
             // Remove from hand (handled by HandManager, see below)
             cardsInPlay.Add(card);
             card.transform.SetParent(playZoneArea, false);
-
+            card.transform.SetAsLastSibling();
 
             // Optionally move/animate card to play zone position here
 
@@ -45,8 +46,8 @@ namespace DigestQuest
                 Debug.Log("2 cards in play! Resolve logic here.");
             }
 
-            // Update Play button
-            playButton.gameObject.SetActive(cardsInPlay.Count > 0);
+            // DO NOT hide/show the Play button here
+            // playButton.gameObject.SetActive(cardsInPlay.Count > 0);
         }
 
         public void ResetPlayZone()
@@ -58,14 +59,16 @@ namespace DigestQuest
 
         public void RemoveCardFromPlay(GameObject card)
         {
+            if (playButton == null) {
+                Debug.LogError("PlayZoneManager: playButton is NULL. Please assign it in Inspector!");
+                return;
+            }
             if (cardsInPlay.Contains(card))
                 cardsInPlay.Remove(card);
 
-
-            // Update Play button
-            playButton.gameObject.SetActive(cardsInPlay.Count > 0);
+            // DO NOT hide/show the Play button here
+            // playButton.gameObject.SetActive(cardsInPlay.Count > 0);
         }
-
 
         //link the digest button to this 
         public void OnPlayButtonClicked()
@@ -92,9 +95,8 @@ namespace DigestQuest
             // scoreManager.AddToScore(points); // Update running score
             cardsInPlay.Clear();
 
-            // Hide Play button
-            playButton.gameObject.SetActive(false);
-
+            // DO NOT hide the Play button here
+            // playButton.gameObject.SetActive(false);
         }
 
     }
