@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace DigestQuest
 {
@@ -22,6 +23,15 @@ namespace DigestQuest
         public DeckManager DeckManager { get; private set; }
         public HandManager HandManager { get; private set; } //same hand manager throughout all scenes
 
+
+        //now also moving playzonearea here
+
+        public PlayZoneManager PlayZoneManager { get; private set; }
+        public Transform PlayZoneArea { get; private set; }
+
+
+
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -36,6 +46,53 @@ namespace DigestQuest
 
         private void InitialiseManagers()
         {
+
+
+            //creating a playzone manager 
+
+            // --- PlayZoneManager instantiation ---
+            if (PlayZoneManager == null)
+            {
+                GameObject prefab = Resources.Load<GameObject>("Prefabs/PlayZoneManager");
+                if (prefab == null)
+                {
+                    Debug.LogError("Cannot find the PlayZoneManager prefab");
+                }
+                else
+                {
+                    // Find the Canvas in the scene
+                    Canvas canvas = FindObjectOfType<Canvas>();
+                    if (canvas == null)
+                    {
+                        Debug.LogError("No Canvas found in the scene! Cannot create PlayZoneManager.");
+                        return;
+                    }
+
+                    // Find or create PlayZoneArea under Canvas
+                    Transform playZoneAreaTransform = canvas.transform.Find("PlayZoneArea");
+                    if (playZoneAreaTransform == null)
+                    {
+                        // If not found, create it
+                        GameObject playZoneAreaGO = new GameObject("PlayZoneArea", typeof(RectTransform));
+                        playZoneAreaGO.transform.SetParent(canvas.transform, false);
+                        playZoneAreaTransform = playZoneAreaGO.transform;
+                        // Set up RectTransform properties as needed...
+                    }
+                    PlayZoneArea = playZoneAreaTransform;
+
+                    // Instantiate PlayZoneManager under Canvas (for UI)
+                    GameObject playZoneManagerGO = Instantiate(prefab, canvas.transform);
+                    PlayZoneManager = playZoneManagerGO.GetComponent<PlayZoneManager>();
+
+                    // Assign dependencies
+                    PlayZoneManager.playZoneArea = PlayZoneArea;
+                    PlayZoneManager.handManager = HandManager;
+                    PlayZoneManager.deckManager = DeckManager;
+                    // Assign playButton if needed:
+                    // PlayZoneManager.playButton = ... (find or create your button under Canvas)
+                }
+            }
+
 
             if (HandManager == null)
             {
