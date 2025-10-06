@@ -65,7 +65,7 @@ namespace DigestQuest
                     handRect.pivot = new Vector2(0.5f, 0.5f);
 
                     // Set your desired anchored position
-                    handRect.anchoredPosition = new Vector2(-375f, 0f);
+                    handRect.anchoredPosition = new Vector2(-375f, -170f);
 
                     // Set size
                     handRect.sizeDelta = new Vector2(400, 100);
