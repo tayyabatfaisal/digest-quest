@@ -15,10 +15,14 @@ namespace DigestQuest
 
         void Start()
         {
+
             if (deckManager == null)
                 deckManager = GameManager.Instance.DeckManager;
             if (handManager == null)
                 handManager = GameManager.Instance.HandManager;
+            Debug.Log($"[PlayZoneManager] playZoneArea in Start: {playZoneArea}");
+                if (playZoneArea == null)
+                    Debug.LogError("[PlayZoneManager] playZoneArea is NULL in Start! Check assignment.");
         }
 
         public void PlayCard(GameObject card)
@@ -35,8 +39,14 @@ namespace DigestQuest
             if (!cardsInPlay.Contains(card))
                 cardsInPlay.Add(card);
 
+            //debug purpose
+            Debug.Log($"playZoneArea ref: {playZoneArea}, parent: {playZoneArea?.parent}");
+
             // Move in UI
             card.transform.SetParent(playZoneArea, false);
+
+            //debug for after setting parent
+            Debug.Log($"Card '{card.name}' new parent: {card.transform.parent}, playZoneArea: {playZoneArea}");
 
             if (cardsInPlay.Count == maxCardsInPlay)
             {
@@ -59,5 +69,44 @@ namespace DigestQuest
             // Move card back to hand (UI and logic)
             handManager.AddExistingCardToHand(card);
         }
+
+
+        public void OnDigestButtonClicked()
+        {
+            int totalPoints = 0;
+
+            // Copy cardsInPlay to avoid modification during iteration
+            var digestingCards = new List<GameObject>(cardsInPlay);
+
+            foreach (GameObject cardObj in digestingCards)
+            {
+                // Get card data
+                Card cardData = cardObj.GetComponent<CardDisplay>().card;
+
+                if (cardData != null)
+                {
+                    // Tally points
+                    totalPoints += 10; // DUMMY VARIABLE SET TO 10 WHEN TALLYING AFTER YOU CLICK <---- CHANGE THIS 
+
+                    // Remove from hand (if present)
+                    handManager.RemoveCardFromHand(cardObj);
+
+                    // Remove from deck (if present)
+                    deckManager.RemoveFromDeck(cardData);
+                }
+
+                // Remove from play zone
+                cardsInPlay.Remove(cardObj);
+
+                // Destroy the card UI object
+                Destroy(cardObj);
+            }
+
+            // Optionally, update your score manager
+            // scoreManager.AddToScore(totalPoints);
+
+            Debug.Log("Digest complete! Total points: " + totalPoints);
+        }
+
     }
 }
