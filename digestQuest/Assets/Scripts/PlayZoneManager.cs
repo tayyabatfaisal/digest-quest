@@ -73,7 +73,7 @@ namespace DigestQuest
         //link the digest button to this 
         public void OnPlayButtonClicked()
         {
-            int points = 0;
+            Debug.Log("DIGEST BUTTON HAS BEEN CLICKED DELETE THE CARDS IN PLAYZONE" );
 
             foreach (GameObject cardObj in cardsInPlay)
             {
