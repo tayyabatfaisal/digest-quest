@@ -18,7 +18,6 @@ namespace DigestQuest
             //add the loaded cards to the allCards list
             allCards.AddRange(cards);
 
-
             HandManager hand = FindObjectOfType<HandManager>();
 
             for (int i = 0; i < 6; i++)
@@ -29,10 +28,37 @@ namespace DigestQuest
 
         public void DrawCard(HandManager handManager)
         {
-            if (allCards.Count == 0) return;
+            if (allCards.Count == 0)
+            {
+                Debug.Log($"NO MORE CARDS IN THE DECK");
+                return;
+            }
             Card nextCard = allCards[currentIndex];
             handManager.AddCardToHand(nextCard);
             currentIndex = (currentIndex + 1) % allCards.Count;
         }
+
+
+        public void RemoveFromDeck(Card card)
+        {
+
+            Debug.Log("REMOVEING THIS CARD FROM DECK: " + card.name);
+            if (allCards.Contains(card))
+            {
+                allCards.Remove(card);
+                // Optionally adjust currentIndex if needed
+                if (currentIndex >= allCards.Count)
+                {
+                    currentIndex = 0;
+                }
+                Debug.Log("Removed card from deck: " + card.cardName);
+            }
+            else
+            {
+                Debug.LogWarning("Tried to remove card not in deck: " + card.cardName);
+            }
+        }
+
+
     }
 }
