@@ -37,5 +37,28 @@ namespace DigestQuest
             handManager.AddCardToHand(nextCard);
             currentIndex = (currentIndex + 1) % allCards.Count;
         }
+
+
+        public void RemoveFromDeck(Card card)
+        {
+
+            Debug.Log("REMOVEING THIS CARD FROM DECK: " + card.name);
+            if (allCards.Contains(card))
+            {
+                allCards.Remove(card);
+                // Optionally adjust currentIndex if needed
+                if (currentIndex >= allCards.Count)
+                {
+                    currentIndex = 0;
+                }
+                Debug.Log("Removed card from deck: " + card.cardName);
+            }
+            else
+            {
+                Debug.LogWarning("Tried to remove card not in deck: " + card.cardName);
+            }
+        }
+
+
     }
 }
