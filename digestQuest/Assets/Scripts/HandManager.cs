@@ -51,7 +51,7 @@ namespace DigestQuest
         {
             if (cardsInHand.Contains(card))
                 cardsInHand.Remove(card);
-            // Optionally destroy or disable the card here, if needed
+ 
             UpdateHandVisuals();
         }
 
@@ -80,11 +80,6 @@ namespace DigestQuest
 
         public void AddExistingCardToHand(GameObject card)
         {
-            if (cardsInHand.Count >= maxHandSize)
-            {
-                Debug.Log("Hand is full!");
-                return;
-            }
 
             card.transform.SetParent(handTransform, false);
             cardsInHand.Add(card); // add to end
