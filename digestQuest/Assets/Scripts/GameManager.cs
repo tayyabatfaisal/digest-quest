@@ -50,7 +50,7 @@ namespace DigestQuest
 
             //creating a playzone manager 
 
-            // --- PlayZoneManager instantiation ---
+            // --- PlayZoneManager instantiation --- + HTE DAMN BUTTON 
             if (PlayZoneManager == null)
             {
                 GameObject prefab = Resources.Load<GameObject>("Prefabs/PlayZoneManager");
@@ -90,7 +90,25 @@ namespace DigestQuest
                     PlayZoneManager.deckManager = DeckManager;
                     // Assign playButton if needed:
                     // PlayZoneManager.playButton = ... (find or create your button under Canvas)
+
+
+
+                    // Find the DigestButton under Canvas
+                    var digestButtonGO = canvas.transform.Find("DigestButton");
+                    if (digestButtonGO != null)
+                    {
+                        Button digestButton = digestButtonGO.GetComponent<Button>();
+                        PlayZoneManager.digestButton = digestButton;
+                        digestButton.onClick.AddListener(PlayZoneManager.OnDigestButtonClicked);
+                    }
+                    else
+                    {
+                        Debug.LogError("DigestButton not found under Canvas!");
+                    }
                 }
+            
+            
+
             }
 
 
