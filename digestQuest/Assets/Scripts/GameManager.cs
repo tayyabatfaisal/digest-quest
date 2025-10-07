@@ -8,7 +8,6 @@ namespace DigestQuest
     public class GameManager : MonoBehaviour //a singleton, only one instance of this class should exist in a game session lifetime
     {
         //init variables
-        private int playerScore = 0;
 
         public static GameManager Instance { get; private set; }
 
@@ -175,10 +174,6 @@ namespace DigestQuest
             }
         }
 
-        public int PlayerScore
-        {
-            get { return playerScore; }
-            set { playerScore = value; }
-        }
+
     }
 }

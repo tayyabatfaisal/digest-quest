@@ -7,8 +7,7 @@ namespace DigestQuest
     {
         public static Player Instance { get; private set; }
 
-        public TMP_Text scoreText; // Will be found by name at runtime
-
+        public TMP_Text scoreText; // Will be found automatically at runtime
         public int score = 0;
 
         private void Awake()

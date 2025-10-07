@@ -13,6 +13,20 @@ namespace DigestQuest
         public HandManager handManager;
         public DeckManager deckManager;
 
+        //adding an init method just so we dont get that dumb error in the console 
+        public void Init(Transform playZoneArea, HandManager handManager, DeckManager deckManager, Button digestButton)
+        {
+            this.playZoneArea = playZoneArea;
+            this.handManager = handManager;
+            this.deckManager = deckManager;
+            this.digestButton = digestButton;
+
+            Debug.Log($"[Init] PlayZoneManager on {gameObject.name}, InstanceID: {GetInstanceID()}");
+            Debug.Log($"[Init] playZoneArea: {playZoneArea}");
+            if (playZoneArea == null)
+                Debug.LogError("[Init] playZoneArea is NULL! Check assignment.");
+        }
+
         void Awake()
         {
             Debug.Log($"[Awake] PlayZoneManager on {gameObject.name}, InstanceID: {GetInstanceID()}");
@@ -20,14 +34,14 @@ namespace DigestQuest
 
         void Start()
         {
-            Debug.Log($"[Start] PlayZoneManager on {gameObject.name}, InstanceID: {GetInstanceID()}");
-            if (deckManager == null)
-                deckManager = GameManager.Instance.DeckManager;
-            if (handManager == null)
-                handManager = GameManager.Instance.HandManager;
-            Debug.Log($"[PlayZoneManager] playZoneArea in Start: {playZoneArea}");
-            if (playZoneArea == null)
-                Debug.LogError("[PlayZoneManager] playZoneArea is NULL in Start! Check assignment.");
+            // Debug.Log($"[Start] PlayZoneManager on {gameObject.name}, InstanceID: {GetInstanceID()}");
+            // if (deckManager == null)
+            //     deckManager = GameManager.Instance.DeckManager;
+            // if (handManager == null)
+            //     handManager = GameManager.Instance.HandManager;
+            // Debug.Log($"[PlayZoneManager] playZoneArea in Start: {playZoneArea}");
+            // if (playZoneArea == null)
+            //     Debug.LogError("[PlayZoneManager] playZoneArea is NULL in Start! Check assignment.");
         }
 
         public void PlayCard(GameObject card)

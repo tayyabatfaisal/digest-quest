@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3645743622499563518
+--- !u!1 &8805888493359532566
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6534373464864762182}
-  - component: {fileID: 4876338450620096752}
+  - component: {fileID: 1226261432934810287}
+  - component: {fileID: 7735111703240581595}
   m_Layer: 0
-  m_Name: Player
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6534373464864762182
+--- !u!4 &1226261432934810287
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3645743622499563518}
+  m_GameObject: {fileID: 8805888493359532566}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1376.6301, y: 808.0243, z: 0}
+  m_LocalPosition: {x: 1672.5428, y: 899.49994, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4876338450620096752
+--- !u!114 &7735111703240581595
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3645743622499563518}
+  m_GameObject: {fileID: 8805888493359532566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4afd0a1a8ac7e438da90adeabdefafb7, type: 3}
+  m_Script: {fileID: 11500000, guid: d019be1c1edac4c7eacaeda454462c23, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Player
-  scoreText: {fileID: 0}
-  score: 0
+  m_EditorClassIdentifier: Assembly-CSharp::DigestQuest.GameManager
