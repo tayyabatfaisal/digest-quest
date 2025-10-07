@@ -8,7 +8,7 @@ namespace DigestQuest
     public class GameManager : MonoBehaviour //a singleton, only one instance of this class should exist in a game session lifetime
     {
         //init variables
-        private int playerScore = 0;
+
 
         public static GameManager Instance { get; private set; }
 
@@ -18,6 +18,8 @@ namespace DigestQuest
 
         public PlayZoneManager PlayZoneManager { get; private set; }
         public Transform PlayZoneArea { get; private set; }
+
+        public Player Player { get; private set; }
 
         private void Awake()
         {
@@ -43,8 +45,11 @@ namespace DigestQuest
                     Debug.LogError("Cannot find Player prefab in Resources/Prefabs!");
                     return;
                 }
-                Instantiate(playerPrefab, transform.position, Quaternion.identity);
+                Instantiate(playerPrefab); // Don't parent it!
             }
+            // Assign the Player property (even if it already existed)
+            Player = Player.Instance;
+            Debug.Log("GameManager.Player assigned: " + (Player != null ? Player.gameObject.name : "NULL"));
         }
 
         private void InitialiseManagers()
@@ -175,10 +180,6 @@ namespace DigestQuest
             }
         }
 
-        public int PlayerScore
-        {
-            get { return playerScore; }
-            set { playerScore = value; }
-        }
+
     }
 }
