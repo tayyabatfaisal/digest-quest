@@ -10,7 +10,7 @@ namespace DigestQuest
         public List<Card> allCards = new List<Card>();
         private int currentIndex = 0;
 
-        private int maxCardsInHand = 5;
+        private int maxCardsInHand = 5; //THE MAXIMUM AMOUNT OF CARDS YOU CAN PLAY WITH BEFORE NEEDING TO DRAW 
 
         public int drawCardUses = 0;
         public int maxDrawCardUses = 2;
@@ -79,9 +79,14 @@ namespace DigestQuest
         public void TryDrawCardButton()
         {
             HandManager handManager = FindObjectOfType<HandManager>();
-            if (handManager.cardsInHand.Count >= 5)
+            PlayZoneManager playZoneManager = FindObjectOfType<PlayZoneManager>();
+
+            int handCount = handManager.cardsInHand.Count;
+            int playZoneCount = playZoneManager.cardsInPlay.Count; // Or whatever your playzone card list is called
+
+            if ((handCount + playZoneCount) >= maxCardsInHand)
             {
-                Debug.Log("Hand is full!");
+                Debug.Log("You still have 5 cards to play with! Can't draw more.");
                 return;
             }
             if (drawCardUses >= maxDrawCardUses)
@@ -89,6 +94,12 @@ namespace DigestQuest
                 Debug.Log("No draws left!");
                 return;
             }
+            if (allCards.Count == 0)
+            {
+                Debug.Log("NO MORE CARDS IN THE DECK");
+                return;
+            }
+
             drawCardUses++;
             DrawCard(handManager);
         }
