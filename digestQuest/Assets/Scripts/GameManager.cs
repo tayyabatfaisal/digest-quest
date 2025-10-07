@@ -111,19 +111,16 @@ namespace DigestQuest
                         handRect = handPositionGO.GetComponent<RectTransform>();
                         handRect.SetParent(canvas.transform, false);
 
-                        // Bottom center anchors/pivot
                         handRect.anchorMin = new Vector2(0.5f, 0f);
                         handRect.anchorMax = new Vector2(0.5f, 0f);
                         handRect.pivot = new Vector2(0.5f, 0.5f);
-
-                        // Place 246 units above bottom edge of Canvas
-                        handRect.anchoredPosition = new Vector2(0f, 246f);
-                        handRect.sizeDelta = new Vector2(1768.593f, 409f);
+                        handRect.anchoredPosition = new Vector2(300f, 600f); // Centered horizontally, 246px above bottom
+                        handRect.sizeDelta = new Vector2(1679.708f, 400f);     // 1000px wide, 200px tall
 
                         // Add HorizontalLayoutGroup for automatic card arrangement
                         var layout = handPositionGO.AddComponent<HorizontalLayoutGroup>();
                         layout.childAlignment = TextAnchor.MiddleCenter;
-                        layout.spacing = 20f; // Adjust for card separation
+                        layout.spacing = 275f; // Adjust for card separation
                         layout.padding = new RectOffset(20, 20, 20, 20); // Edge spacing
                         layout.childForceExpandWidth = false;
                         layout.childForceExpandHeight = false;
