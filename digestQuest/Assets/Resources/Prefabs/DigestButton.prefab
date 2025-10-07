@@ -37,8 +37,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 633, y: -24.509}
-  m_SizeDelta: {x: 203.1954, y: 78.379}
+  m_AnchoredPosition: {x: 1012, y: -37.072}
+  m_SizeDelta: {x: 293.1435, y: 144.3408}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &920083417026883469
 CanvasRenderer:
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 714bdb750c6f54ea4b0ca5ff54cb3091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DigestQuest.PlayZoneManager
-  playButton: {fileID: 0}
+  digestButton: {fileID: 0}
   playZoneArea: {fileID: 0}
   maxCardsInPlay: 2
   cardsInPlay: []
@@ -244,8 +244,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26
-  m_fontSizeBase: 26
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
