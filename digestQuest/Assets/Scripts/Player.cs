@@ -1,42 +1,58 @@
 using UnityEngine;
-using System.Collections.Generic;
-using TMPro; // If you want UI links
+using TMPro;
 
-public class Player : MonoBehaviour
+namespace DigestQuest
 {
-    public static Player Instance { get; private set; }
-
-    public int score = 0;
-    // public List<TokenType> tokens = new List<TokenType>(); // Or Token objects, if you prefer
-
-    private void Awake()
+    public class Player : MonoBehaviour
     {
-        // Singleton setup
-        if (Instance != null && Instance != this)
+        public static Player Instance { get; private set; }
+
+        public TMP_Text scoreText; // Will be found by name at runtime
+
+        public int score = 0;
+
+        private void Awake()
         {
-            Destroy(gameObject);
-            return;
+            // Singleton setup
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+
+        private void Start()
+        {
+            // Find the TMP_Text in the scene by name
+            scoreText = GameObject.Find("PlayerScoreText")?.GetComponent<TMP_Text>();
+
+            // Make sure it's found
+            if (scoreText == null)
+                Debug.LogWarning("PlayerScoreText TMP_Text not found in scene!");
+
+            // Initial update
+            UpdateScoreUI();
+        }
+
+        public void AddScore(int amount)
+        {
+            score += amount;
+            Debug.Log("Score updated! Current score: " + score);
+            UpdateScoreUI();
+        }
+
+        public void UpdateScoreUI()
+        {
+            if (scoreText != null)
+            {
+                scoreText.text = $"Score: {score}";
+            }
+            else
+            {
+                Debug.LogWarning("ScoreText UI reference is not assigned!");
+            }
+        }
     }
-
-    public void AddScore(int amount)
-    {
-        score += amount;
-        Debug.Log("Score updated! Current score: " + score);
-        // Optionally update score UI here
-    }
-
-    // public void AddToken(TokenType type)
-    // {
-    //     tokens.Add(type);
-    // }
-
-    // public void RemoveToken(TokenType type)
-    // {
-    //     tokens.Remove(type);
-    // }
-
-    // Add digest/absorb logic here later
 }
