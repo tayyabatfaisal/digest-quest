@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 namespace DigestQuest
 {
@@ -17,6 +18,8 @@ namespace DigestQuest
 
         // FOR THE BUTTON to darw the cards
         public Button drawCardButton;
+
+        public TMP_Text drawsLeftText;//to show number of draws left 
 
         void Start()
         {
@@ -41,6 +44,18 @@ namespace DigestQuest
                 drawCardButton.onClick.RemoveAllListeners();
                 drawCardButton.onClick.AddListener(TryDrawCardButton);
             }
+
+
+            //attaching the button to display draws left
+            // Find the TMP_Text in the scene by name or tag
+            drawsLeftText = GameObject.Find("DrawsLeftText")?.GetComponent<TMP_Text>();
+
+            // Make sure it's found
+            if (drawsLeftText == null)
+                Debug.LogWarning("DrawsLeftText TMP_Text not found in scene!");
+
+            // Initial update
+            UpdateDrawsLeftText();
         }
 
         public void DrawCard(HandManager handManager)
@@ -102,8 +117,17 @@ namespace DigestQuest
 
             drawCardUses++;
             DrawCard(handManager);
+            UpdateDrawsLeftText();
         }
 
+        public void UpdateDrawsLeftText()
+        {
+            if (drawsLeftText != null)
+            {
+                int drawsLeft = maxDrawCardUses - drawCardUses;
+                drawsLeftText.text = $"Draws Left: {drawsLeft}";
+            }
+        }
 
     }
 }
