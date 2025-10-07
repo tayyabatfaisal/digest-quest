@@ -85,75 +85,48 @@ namespace DigestQuest
                     }
                 }
             }
+if (HandManager == null)
+{
+    GameObject handManagerPrefab = Resources.Load<GameObject>("Prefabs/HandManager");
+    GameObject handPositionPrefab = Resources.Load<GameObject>("Prefabs/HandPosition");
+    if (handManagerPrefab == null)
+    {
+        Debug.Log("cannot find the HandManager prefab");
+    }
+    else if (handPositionPrefab == null)
+    {
+        Debug.LogError("Cannot find the HandPosition prefab in Resources/Prefabs!");
+    }
+    else
+    {
+        Canvas canvas = FindObjectOfType<Canvas>();
+        if (canvas == null)
+        {
+            Debug.LogError("No Canvas found in the scene! Cannot create HandPosition.");
+            return;
+        }
 
-            // --- HandManager instantiation and HandPosition area setup ---
-            if (HandManager == null)
-            {
-                GameObject handManagerPrefab = Resources.Load<GameObject>("Prefabs/HandManager");
-                if (handManagerPrefab == null)
-                {
-                    Debug.Log("cannot find the HandManager prefab");
-                }
-                else
-                {
-                    Canvas canvas = FindObjectOfType<Canvas>();
-                    if (canvas == null)
-                    {
-                        Debug.LogError("No Canvas found in the scene! Cannot create HandPosition.");
-                        return;
-                    }
+        // Find or create HandPosition under Canvas
+        Transform handPositionTransform = canvas.transform.Find("HandPosition");
+        RectTransform handRect;
+        if (handPositionTransform == null)
+        {
+            // Instantiate HandPosition prefab under Canvas
+            GameObject handPositionGO = Instantiate(handPositionPrefab, canvas.transform);
+            handPositionGO.name = "HandPosition"; // Ensure consistent naming
+            handRect = handPositionGO.GetComponent<RectTransform>();
+        }
+        else
+        {
+            handRect = handPositionTransform.GetComponent<RectTransform>();
+        }
 
-                    Transform handPositionTransform = canvas.transform.Find("HandPosition");
-                    RectTransform handRect;
-                    if (handPositionTransform == null)
-                    {
-                        GameObject handPositionGO = new GameObject("HandPosition", typeof(RectTransform));
-                        handRect = handPositionGO.GetComponent<RectTransform>();
-                        handRect.SetParent(canvas.transform, false);
-
-                        handRect.anchorMin = new Vector2(0.5f, 0f);
-                        handRect.anchorMax = new Vector2(0.5f, 0f);
-                        handRect.pivot = new Vector2(0.5f, 0.5f);
-                        handRect.anchoredPosition = new Vector2(300f, 600f); // Centered horizontally, 246px above bottom
-                        handRect.sizeDelta = new Vector2(1679.708f, 400f);     // 1000px wide, 200px tall
-
-                        // Add HorizontalLayoutGroup for automatic card arrangement
-                        var layout = handPositionGO.AddComponent<HorizontalLayoutGroup>();
-                        layout.childAlignment = TextAnchor.MiddleCenter;
-                        layout.spacing = 275f; // Adjust for card separation
-                        layout.padding = new RectOffset(20, 20, 20, 20); // Edge spacing
-                        layout.childForceExpandWidth = false;
-                        layout.childForceExpandHeight = false;
-                        layout.childControlWidth = true;
-                        layout.childControlHeight = true;
-
-                        // Optional debug background
-                        var img = handPositionGO.AddComponent<UnityEngine.UI.Image>();
-                        img.color = new Color(0f, 0f, 0f, 0.1f);
-                    }
-                    else
-                    {
-                        handRect = handPositionTransform.GetComponent<RectTransform>();
-                        var layout = handRect.GetComponent<HorizontalLayoutGroup>();
-                        if (layout == null)
-                        {
-                            layout = handRect.gameObject.AddComponent<HorizontalLayoutGroup>();
-                            layout.childAlignment = TextAnchor.MiddleCenter;
-                            layout.spacing = 20f;
-                            layout.padding = new RectOffset(20, 20, 20, 20);
-                            layout.childForceExpandWidth = false;
-                            layout.childForceExpandHeight = false;
-                            layout.childControlWidth = true;
-                            layout.childControlHeight = true;
-                        }
-                    }
-
-                    // Instantiate HandManager and assign handTransform
-                    GameObject handManagerGO = Instantiate(handManagerPrefab, transform.position, Quaternion.identity, transform);
-                    HandManager = handManagerGO.GetComponent<HandManager>();
-                    HandManager.handTransform = handRect;
-                }
-            }
+        // Instantiate HandManager and assign handTransform
+        GameObject handManagerGO = Instantiate(handManagerPrefab, transform.position, Quaternion.identity, transform);
+        HandManager = handManagerGO.GetComponent<HandManager>();
+        HandManager.handTransform = handRect;
+    }
+}
 
             // --- AudioManager instantiation ---
             if (AudioManager == null)
