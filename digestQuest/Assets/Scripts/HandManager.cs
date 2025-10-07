@@ -48,20 +48,25 @@ namespace DigestQuest
             int cardCount = cardsInHand.Count;
             if (cardCount == 0) return;
 
-            Vector3 startPosition = handTransform.position;
-            float xSpacing = cardSpacing;
+            RectTransform handRect = handTransform.GetComponent<RectTransform>();
+            float usableWidth = handRect.rect.width;
+
+            // Calculate spacing so cards fill the entire available width (with padding)
+            float cardWidth = cardsInHand[0].GetComponent<RectTransform>().rect.width;
+            float padding = 20f; // space between cards, adjust as needed
+            float totalCardWidth = cardCount * cardWidth + (cardCount - 1) * padding;
+            float startX = -totalCardWidth / 2f + cardWidth / 2f;
 
             for (int i = 0; i < cardCount; i++)
             {
-                Vector3 cardPos = startPosition + new Vector3(i * xSpacing, 0, 0);
-                cardsInHand[i].transform.position = cardPos;
-                cardsInHand[i].transform.rotation = Quaternion.identity;
-                cardsInHand[i].transform.SetSiblingIndex(i);
-            }
+                GameObject cardGO = cardsInHand[i];
+                RectTransform cardRect = cardGO.GetComponent<RectTransform>();
+                cardRect.SetParent(handTransform, false);
 
-            for (int i = 0; i < cardsInHand.Count; i++)
-            {
-                Debug.Log($"Hand [{i}]: {cardsInHand[i].name} at {cardsInHand[i].transform.position}");
+                float x = startX + i * (cardWidth + padding);
+                cardRect.anchoredPosition = new Vector2(x, 0);
+                cardRect.localRotation = Quaternion.identity;
+                cardRect.SetSiblingIndex(i);
             }
         }
 
