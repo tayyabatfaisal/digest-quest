@@ -28,7 +28,23 @@ namespace DigestQuest
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            InitialisePlayer();
             InitialiseManagers();
+        }
+
+
+        private void InitialisePlayer()
+        {
+            if (Player.Instance == null)
+            {
+                GameObject playerPrefab = Resources.Load<GameObject>("Prefabs/Player");
+                if (playerPrefab == null)
+                {
+                    Debug.LogError("Cannot find Player prefab in Resources/Prefabs!");
+                    return;
+                }
+                Instantiate(playerPrefab, transform.position, Quaternion.identity);
+            }
         }
 
         private void InitialiseManagers()
@@ -85,48 +101,48 @@ namespace DigestQuest
                     }
                 }
             }
-if (HandManager == null)
-{
-    GameObject handManagerPrefab = Resources.Load<GameObject>("Prefabs/HandManager");
-    GameObject handPositionPrefab = Resources.Load<GameObject>("Prefabs/HandPosition");
-    if (handManagerPrefab == null)
-    {
-        Debug.Log("cannot find the HandManager prefab");
-    }
-    else if (handPositionPrefab == null)
-    {
-        Debug.LogError("Cannot find the HandPosition prefab in Resources/Prefabs!");
-    }
-    else
-    {
-        Canvas canvas = FindObjectOfType<Canvas>();
-        if (canvas == null)
-        {
-            Debug.LogError("No Canvas found in the scene! Cannot create HandPosition.");
-            return;
-        }
+            if (HandManager == null)
+            {
+                GameObject handManagerPrefab = Resources.Load<GameObject>("Prefabs/HandManager");
+                GameObject handPositionPrefab = Resources.Load<GameObject>("Prefabs/HandPosition");
+                if (handManagerPrefab == null)
+                {
+                    Debug.Log("cannot find the HandManager prefab");
+                }
+                else if (handPositionPrefab == null)
+                {
+                    Debug.LogError("Cannot find the HandPosition prefab in Resources/Prefabs!");
+                }
+                else
+                {
+                    Canvas canvas = FindObjectOfType<Canvas>();
+                    if (canvas == null)
+                    {
+                        Debug.LogError("No Canvas found in the scene! Cannot create HandPosition.");
+                        return;
+                    }
 
-        // Find or create HandPosition under Canvas
-        Transform handPositionTransform = canvas.transform.Find("HandPosition");
-        RectTransform handRect;
-        if (handPositionTransform == null)
-        {
-            // Instantiate HandPosition prefab under Canvas
-            GameObject handPositionGO = Instantiate(handPositionPrefab, canvas.transform);
-            handPositionGO.name = "HandPosition"; // Ensure consistent naming
-            handRect = handPositionGO.GetComponent<RectTransform>();
-        }
-        else
-        {
-            handRect = handPositionTransform.GetComponent<RectTransform>();
-        }
+                    // Find or create HandPosition under Canvas
+                    Transform handPositionTransform = canvas.transform.Find("HandPosition");
+                    RectTransform handRect;
+                    if (handPositionTransform == null)
+                    {
+                        // Instantiate HandPosition prefab under Canvas
+                        GameObject handPositionGO = Instantiate(handPositionPrefab, canvas.transform);
+                        handPositionGO.name = "HandPosition"; // Ensure consistent naming
+                        handRect = handPositionGO.GetComponent<RectTransform>();
+                    }
+                    else
+                    {
+                        handRect = handPositionTransform.GetComponent<RectTransform>();
+                    }
 
-        // Instantiate HandManager and assign handTransform
-        GameObject handManagerGO = Instantiate(handManagerPrefab, transform.position, Quaternion.identity, transform);
-        HandManager = handManagerGO.GetComponent<HandManager>();
-        HandManager.handTransform = handRect;
-    }
-}
+                    // Instantiate HandManager and assign handTransform
+                    GameObject handManagerGO = Instantiate(handManagerPrefab, transform.position, Quaternion.identity, transform);
+                    HandManager = handManagerGO.GetComponent<HandManager>();
+                    HandManager.handTransform = handRect;
+                }
+            }
 
             // --- AudioManager instantiation ---
             if (AudioManager == null)
