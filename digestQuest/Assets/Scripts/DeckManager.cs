@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace DigestQuest
 {
@@ -9,6 +10,13 @@ namespace DigestQuest
         public List<Card> allCards = new List<Card>();
         private int currentIndex = 0;
 
+        private int maxCardsInHand = 5;
+
+        public int drawCardUses = 0;
+        public int maxDrawCardUses = 2;
+
+        // FOR THE BUTTON to darw the cards
+        public Button drawCardButton;
 
         void Start()
         {
@@ -18,11 +26,20 @@ namespace DigestQuest
             //add the loaded cards to the allCards list
             allCards.AddRange(cards);
 
+            //find the hand manager 
             HandManager hand = FindObjectOfType<HandManager>();
 
-            for (int i = 0; i < 6; i++)
+            //populate the hand with random cards 
+            for (int i = 0; i <= maxCardsInHand; i++)
             {
                 DrawCard(hand);
+            }
+
+            //attatching the drawCardButton
+            if (drawCardButton != null)
+            {
+                drawCardButton.onClick.RemoveAllListeners();
+                drawCardButton.onClick.AddListener(TryDrawCardButton);
             }
         }
 
@@ -57,6 +74,23 @@ namespace DigestQuest
             {
                 Debug.LogWarning("Tried to remove card not in deck: " + card.cardName);
             }
+        }
+
+        public void TryDrawCardButton()
+        {
+            HandManager handManager = FindObjectOfType<HandManager>();
+            if (handManager.cardsInHand.Count >= 5)
+            {
+                Debug.Log("Hand is full!");
+                return;
+            }
+            if (drawCardUses >= maxDrawCardUses)
+            {
+                Debug.Log("No draws left!");
+                return;
+            }
+            drawCardUses++;
+            DrawCard(handManager);
         }
 
 
