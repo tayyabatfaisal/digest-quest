@@ -91,12 +91,6 @@ namespace DigestQuest
             // Make a copy of the list to avoid modification during iteration
             List<GameObject> digestingCards = new List<GameObject>(cardsInPlay);
 
-            Debug.Log("[Digest] Contents of cardsInPlay:");
-            foreach (var c in cardsInPlay)
-            {
-                Debug.Log($"[Digest] - {c.name}");
-            }
-
             foreach (GameObject cardObj in digestingCards)
             {
                 // Get Card data (if needed for points)
@@ -114,6 +108,8 @@ namespace DigestQuest
                 Destroy(cardObj);
             }
 
+            //update the global score for the player 
+            Player.Instance.AddScore(totalPoints);
             // Optionally update score
             Debug.Log("Digest complete! Total points: " + totalPoints);
         }

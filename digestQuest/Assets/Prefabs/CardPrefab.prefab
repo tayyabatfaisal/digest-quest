@@ -481,14 +481,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.08770915, g: 0.67120594, b: 0.6886792, a: 1}
+  m_Color: {r: 0.95873636, g: 0.9622642, b: 0.64907444, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7654328554491658452, guid: f03914e5f37cb4e91908919d5b13940b, type: 3}
+  m_Sprite: {fileID: 3299675781018586457, guid: 7bf46f61668ac4f5290e5692b9cd0054, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -549,6 +549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52857689809c443d5adeed65d28ac8b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DigestQuest.CardDisplay
+  currentLocation: 0
   card: {fileID: 11400000, guid: 487743e52b4d8451b9b376e18ec717be, type: 2}
   cardImage: {fileID: 0}
   nameText: {fileID: 738283604606873270}
