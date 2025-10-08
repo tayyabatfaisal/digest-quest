@@ -32,15 +32,11 @@ namespace DigestQuest
 
         void Start()
         {
-            // Only load cards once
             if (allCards.Count == 0)
             {
                 Card[] cards = Resources.LoadAll<Card>("Cards");
                 allCards.AddRange(cards);
             }
-
-            // Do NOT auto-populate the hand here!
-            // Only draw cards when starting the game, not on every scene load
         }
 
         public void RelinkSceneReferences(Canvas canvas)
@@ -117,14 +113,29 @@ namespace DigestQuest
             }
         }
 
-        // Call this ONCE at game start, not on every scene load!
-        public void PopulateInitialHand()
+        // Updated: Only populate if hand is empty
+        public void TryPopulateInitialHand()
         {
             HandManager hand = GameManager.Instance.HandManager;
-            for (int i = 0; i < maxCardsInHand; i++)
+            int handCount = hand.cardsInHand.Count;
+            int deckCount = allCards.Count;
+
+            int toDraw = Mathf.Min(maxCardsInHand - handCount, deckCount);
+            for (int i = 0; i < toDraw; i++)
             {
                 DrawCard(hand);
             }
+            Debug.Log($"Populated initial hand with {toDraw} cards.");
+        }
+
+     public void ResetDeck()
+        {
+            allCards.Clear();
+            Card[] cards = Resources.LoadAll<Card>("Cards");
+            allCards.AddRange(cards);
+            currentIndex = 0; // Optionally reset draw index
+            drawCardUses = 0; // Reset draw counter
+            Debug.Log("Deck reset and reloaded with cards: " + allCards.Count);
         }
     }
 }

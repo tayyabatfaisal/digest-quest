@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DigestQuest.HandManager
   maxHandSize: 5
   deckManager: {fileID: 0}
-  cardPrefab: {fileID: 0}
+  cardPrefab: {fileID: 8013512917479614187, guid: c7e6db64ccdb242d19944a1b312e15e2, type: 3}
   handTransform: {fileID: 0}
   cardSpacing: 3.5
   cardDataList: []

@@ -49,7 +49,10 @@ namespace DigestQuest
                 {
                     skipButton.onClick.RemoveAllListeners();
                     if (sceneName == "Mouth")
-                        skipButton.onClick.AddListener(() => sceneController.GoToStomach());
+                    {
+                        DeckManager.Instance.ResetDeck();
+                        DeckManager.Instance.TryPopulateInitialHand();
+                    }
                     else if (sceneName == "Stomach")
                         skipButton.onClick.AddListener(() => sceneController.GoToIntestine());
                     else if (sceneName == "Intestine")
