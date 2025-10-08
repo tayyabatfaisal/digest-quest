@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: dff06c2886ea942da85f4e8994a94af9
+guid: 26eca65c3be354dcab493eedef23ae13
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -710094558852045356
-    second: Cool Text - Digestion Rank 493000627708960_0
+      213: 7838934023585559457
+    second: Cool Text - Digestion Stats 493011934392127_0
   - first:
-      213: 1341542214848107062
-    second: Cool Text - Digestion Rank 493000627708960_1
+      213: 8397830663542667433
+    second: Cool Text - Digestion Stats 493011934392127_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,13 +103,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Cool Text - Digestion Rank 493000627708960_0
+      name: Cool Text - Digestion Stats 493011934392127_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 5
-        width: 518
-        height: 136
+        x: 7
+        y: 9
+        width: 842
+        height: 130
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,20 +118,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4d5afaec2cc3526f0800000000000000
-      internalID: -710094558852045356
+      spriteID: 1a37a8546fc79cc60800000000000000
+      internalID: 7838934023585559457
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Cool Text - Digestion Rank 493000627708960_1
+      name: Cool Text - Digestion Stats 493011934392127_1
       rect:
         serializedVersion: 2
-        x: 540
+        x: 543
         y: 32
-        width: 335
-        height: 109
+        width: 310
+        height: 108
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,30 +140,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 632563f598d1e9210800000000000000
-      internalID: 1341542214848107062
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Cool Text - Digestion Rank 493000627708960_2
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 6
-        width: 881
-        height: 139
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e4980d693dbe24625becc21846ef518e
-      internalID: 1879344032
+      spriteID: 9a8f750be761b8470800000000000000
+      internalID: 8397830663542667433
       vertices: []
       indices: 
       edges: []
@@ -172,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 12a3bef024a994a69af16f31f3976c95
+    spriteID: 66191afd922954dbfbc67af53404676b
     internalID: 0
     vertices: []
     indices: 
@@ -182,9 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Cool Text - Digestion Rank 493000627708960_0: -710094558852045356
-      Cool Text - Digestion Rank 493000627708960_1: 1341542214848107062
-      Cool Text - Digestion Rank 493000627708960_2: 1879344032
+      Cool Text - Digestion Stats 493011934392127_0: 7838934023585559457
+      Cool Text - Digestion Stats 493011934392127_1: 8397830663542667433
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -26,9 +26,23 @@ namespace DigestQuest
 
         public void RelinkSceneReferences(Canvas canvas)
         {
+            // Wire play zone area
             Transform playZoneAreaTransform = canvas.transform.Find("PlayZoneArea");
             playZoneArea = playZoneAreaTransform;
-            // Optionally, rebuild play zone UI from cardDataInPlay here if needed
+
+            // Wire DigestButton
+            Transform digestButtonTransform = canvas.transform.Find("DigestButton");
+            if (digestButtonTransform != null)
+            {
+                digestButton = digestButtonTransform.GetComponent<Button>();
+                digestButton.onClick.RemoveAllListeners();
+                digestButton.onClick.AddListener(OnDigestButtonClicked);
+                Debug.Log("DigestButton wired to OnDigestButtonClicked in PlayZoneManager.");
+            }
+            else
+            {
+                Debug.LogError("DigestButton not found under Canvas!");
+            }
         }
 
         public void PlayCard(GameObject card)

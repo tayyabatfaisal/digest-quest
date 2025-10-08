@@ -104,12 +104,12 @@ namespace DigestQuest
                 GameObject deckManagerGO = Instantiate(deckManagerPrefab, Vector3.zero, Quaternion.identity);
                 // NO parent argument!
                 DeckManager = deckManagerGO.GetComponent<DeckManager>();
-                DontDestroyOnLoad(deckManagerGO); 
+                DontDestroyOnLoad(deckManagerGO);
                 Debug.Log("DeckManager instantiated as root object: " + deckManagerGO);
             }
             if (DeckManager != null)
-                 Debug.Log("DECKMANAGER EXISTS SOMEWHER");
-                DeckManager.RelinkSceneReferences(canvas);
+                Debug.Log("DECKMANAGER EXISTS SOMEWHER");
+            DeckManager.RelinkSceneReferences(canvas);
 
             // --- AudioManager ---
             if (AudioManager == null)
@@ -140,6 +140,12 @@ namespace DigestQuest
             PlayZoneArea = playZoneAreaTransform;
             PlayZoneManager.playZoneArea = PlayZoneArea;
             PlayZoneManager.RelinkSceneReferences(canvas);
-        }
-    }
+            
+
+
+            // --- Re-link Player score UI ---
+            if (Player != null)
+                Player.RelinkSceneReferences(canvas);
+                    }
+                }
 }

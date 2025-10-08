@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Stomach.unity
     guid: 177b1f983a4c74282be7378aa4a213eb
   - enabled: 1
+    path: Assets/Scenes/Intestine.unity
+    guid: 8475cd5e8898147ef954fb308acb82dc
+  - enabled: 1
     path: Assets/Scenes/End.unity
     guid: 86353525eb4ca44c9a33cfae27277e25
   m_configObjects:

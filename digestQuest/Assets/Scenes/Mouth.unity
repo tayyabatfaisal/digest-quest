@@ -1068,7 +1068,7 @@ PrefabInstance:
       objectReference: {fileID: 827328955483178866, guid: 1e5267e67ebd348798964e0b36c22f50, type: 3}
     - target: {fileID: 2960940169314610381, guid: 6bbc9642fa26c454bae716a79584d2af, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: GoToEndScreen
+      value: GoToStomach
       objectReference: {fileID: 0}
     - target: {fileID: 2960940169314610381, guid: 6bbc9642fa26c454bae716a79584d2af, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
