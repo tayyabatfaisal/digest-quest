@@ -21,7 +21,6 @@ namespace DigestQuest
 
         private void Awake()
         {
-            // Make persistent
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
@@ -42,18 +41,17 @@ namespace DigestQuest
 
             // Do NOT auto-populate the hand here!
             // Only draw cards when starting the game, not on every scene load
+        }
 
-            // Set up draw card button
+        public void RelinkSceneReferences(Canvas canvas)
+        {
+            drawCardButton = GameObject.Find("DrawCardButton")?.GetComponent<Button>();
+            drawsLeftText = GameObject.Find("DrawsLeftText")?.GetComponent<TMP_Text>();
             if (drawCardButton != null)
             {
                 drawCardButton.onClick.RemoveAllListeners();
                 drawCardButton.onClick.AddListener(TryDrawCardButton);
             }
-
-            // Set up draws left text
-            drawsLeftText = GameObject.Find("DrawsLeftText")?.GetComponent<TMP_Text>();
-            if (drawsLeftText == null)
-                Debug.LogWarning("DrawsLeftText TMP_Text not found in scene!");
             UpdateDrawsLeftText();
         }
 
@@ -71,7 +69,6 @@ namespace DigestQuest
 
         public void RemoveFromDeck(Card card)
         {
-            Debug.Log("REMOVEING THIS CARD FROM DECK: " + card.name);
             if (allCards.Contains(card))
             {
                 allCards.Remove(card);
@@ -79,11 +76,6 @@ namespace DigestQuest
                 {
                     currentIndex = 0;
                 }
-                Debug.Log("Removed card from deck: " + card.cardName);
-            }
-            else
-            {
-                Debug.LogWarning("Tried to remove card not in deck: " + card.cardName);
             }
         }
 

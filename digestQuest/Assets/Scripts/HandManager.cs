@@ -11,7 +11,7 @@ namespace DigestQuest
         public Transform handTransform;
         public float cardSpacing = 3.5f;
 
-        public List<Card> cardDataList = new List<Card>(); // cards DATA of cards in hand
+        public List<Card> cardDataList = new List<Card>();
         public List<GameObject> cardsInHand = new List<GameObject>();
 
         private void Awake()
@@ -38,7 +38,6 @@ namespace DigestQuest
             UpdateHandVisuals();
         }
 
-        // Only remove from lists, do NOT Destroy card!
         public void RemoveCardFromHand(GameObject card)
         {
             int idx = cardsInHand.IndexOf(card);
@@ -57,21 +56,16 @@ namespace DigestQuest
                 Debug.LogWarning("HandTransform is not set!");
                 return;
             }
-            Debug.LogWarning("recreating ");
             GameObject newCard = Instantiate(cardPrefab, handTransform.position, Quaternion.identity, handTransform);
             cardsInHand.Add(newCard);
             newCard.GetComponent<CardDisplay>().card = cardData;
             newCard.name = cardData.cardName;
         }
 
-        // Re-link handTransform and rebuild visuals
         public void RelinkSceneReferences(Canvas canvas)
         {
             Transform handPositionTransform = canvas.transform.Find("HandPosition");
-            if (handPositionTransform != null)
-                handTransform = handPositionTransform.GetComponent<RectTransform>();
-            else
-                Debug.LogWarning("HandPosition not found in new scene!");
+            handTransform = handPositionTransform?.GetComponent<RectTransform>();
 
             // Destroy all current card UI objects
             foreach (var cardGO in cardsInHand)

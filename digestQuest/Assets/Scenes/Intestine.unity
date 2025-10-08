@@ -1067,6 +1067,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DrawCardButton
       objectReference: {fileID: 0}
+    - target: {fileID: 7462170424182358859, guid: 992c7f73a55fd452c9988f43a2a4b7ac, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8918083074254577996, guid: 992c7f73a55fd452c9988f43a2a4b7ac, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1147,7 +1151,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6733396461027688558, guid: 992c7f73a55fd452c9988f43a2a4b7ac, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1430,7 +1435,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2996186114313777454, guid: 779a5bfaa0ef444e4be8cb6e573ebfcd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
