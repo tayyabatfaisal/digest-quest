@@ -1,12 +1,11 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 namespace DigestQuest
 {
-    public class GameManager : MonoBehaviour //a singleton, only one instance of this class should exist in a game session lifetime
+    public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
 
@@ -25,23 +24,20 @@ namespace DigestQuest
         {
             if (Instance != null && Instance != this)
             {
-                Destroy(gameObject); // Only one GameManager allowed!
+                Destroy(gameObject);
                 return;
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // Listen for scene changes!
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         private void OnDestroy()
         {
-            // Unsubscribe to prevent memory leaks!
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
-        // Called by Unity automatically after any scene loads
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             sceneName = scene.name;
@@ -93,150 +89,165 @@ namespace DigestQuest
                     Debug.LogError("Cannot find Player prefab in Resources/Prefabs!");
                     return;
                 }
-                Instantiate(playerPrefab); // Don't parent it!
+                var playerObj = Instantiate(playerPrefab);
+                DontDestroyOnLoad(playerObj);
             }
-            // Assign the Player property (even if it already existed)
             Player = Player.Instance;
             Debug.Log("GameManager.Player assigned: " + (Player != null ? Player.gameObject.name : "NULL"));
         }
 
         private void InitialiseManagers()
         {
-            // --- PlayZoneManager instantiation ---
-            if (PlayZoneManager != null)
+            Canvas canvas = FindObjectOfType<Canvas>();
+            if (canvas == null)
             {
-                Destroy(PlayZoneManager.gameObject);
-                PlayZoneManager = null;
-            }
-            if (HandManager != null)
-            {
-                Destroy(HandManager.gameObject);
-                HandManager = null;
-            }
-            if (AudioManager != null)
-            {
-                Destroy(AudioManager.gameObject);
-                AudioManager = null;
-            }
-            if (DeckManager != null)
-            {
-                Destroy(DeckManager.gameObject);
-                DeckManager = null;
+                Debug.LogError("No Canvas found in the scene!");
+                return;
             }
 
-            // --- PlayZoneManager instantiation ---
-            GameObject playZoneManagerPrefab = Resources.Load<GameObject>("Prefabs/PlayZoneManager");
-            if (playZoneManagerPrefab == null)
+            // --- HandManager ---
+            if (HandManager == null)
             {
-                Debug.LogError("Cannot find the PlayZoneManager prefab");
+                GameObject handManagerPrefab = Resources.Load<GameObject>("Prefabs/HandManager");
+                if (handManagerPrefab != null)
+                {
+                    // ROOT OBJECT: No parent!
+                    GameObject handManagerGO = Instantiate(handManagerPrefab, Vector3.zero, Quaternion.identity);
+                    HandManager = handManagerGO.GetComponent<HandManager>();
+                    DontDestroyOnLoad(handManagerGO);
+                }
+                else
+                {
+                    Debug.LogError("Cannot find the HandManager prefab");
+                }
+            }
+            // Always re-link handTransform to new HandPosition in the scene
+            Transform handPositionTransform = canvas.transform.Find("HandPosition");
+            RectTransform handRect = null;
+            if (handPositionTransform == null)
+            {
+                GameObject handPositionPrefab = Resources.Load<GameObject>("Prefabs/HandPosition");
+                if (handPositionPrefab != null)
+                {
+                    GameObject handPositionGO = Instantiate(handPositionPrefab, canvas.transform);
+                    handPositionGO.name = "HandPosition";
+                    handRect = handPositionGO.GetComponent<RectTransform>();
+                }
+                else
+                {
+                    Debug.LogError("Cannot find the HandPosition prefab in Resources/Prefabs!");
+                }
             }
             else
             {
-                // Find the Canvas in the scene
-                Canvas canvas = FindObjectOfType<Canvas>();
-                if (canvas == null)
-                {
-                    Debug.LogError("No Canvas found in the scene! Cannot create PlayZoneManager.");
-                    return;
-                }
+                handRect = handPositionTransform.GetComponent<RectTransform>();
+            }
+            if (HandManager != null && handRect != null)
+            {
+                HandManager.handTransform = handRect;
+            }
 
-                // Find or create PlayZoneArea under Canvas
+            // --- DeckManager ---
+            if (DeckManager == null)
+            {
+                GameObject deckManagerPrefab = Resources.Load<GameObject>("Prefabs/DeckManager");
+                if (deckManagerPrefab != null)
+                {
+                    // ROOT OBJECT: No parent!
+                    GameObject deckManagerGO = Instantiate(deckManagerPrefab, Vector3.zero, Quaternion.identity);
+                    DeckManager = deckManagerGO.GetComponent<DeckManager>();
+                    DontDestroyOnLoad(deckManagerGO);
+                }
+                else
+                {
+                    Debug.LogError("Cannot find the DECK manager prefab");
+                }
+            }
+
+            // --- AudioManager ---
+            if (AudioManager == null)
+            {
+                GameObject audioManagerPrefab = Resources.Load<GameObject>("Prefabs/AudioManager");
+                if (audioManagerPrefab != null)
+                {
+                    // ROOT OBJECT: No parent!
+                    GameObject audioManagerGO = Instantiate(audioManagerPrefab, Vector3.zero, Quaternion.identity);
+                    AudioManager = audioManagerGO.GetComponent<AudioManager>();
+                    DontDestroyOnLoad(audioManagerGO);
+                }
+                else
+                {
+                    Debug.LogError("Cannot find the Audio manager prefab");
+                }
+            }
+
+            // --- PlayZoneManager ---
+            // PlayZoneManager is SCENE-SPECIFIC, keep as child of Canvas!
+            if (PlayZoneManager == null)
+            {
+                GameObject playZoneManagerPrefab = Resources.Load<GameObject>("Prefabs/PlayZoneManager");
+                if (playZoneManagerPrefab != null)
+                {
+                    // Find or create PlayZoneArea under Canvas
+                    Transform playZoneAreaTransform = canvas.transform.Find("PlayZoneArea");
+                    if (playZoneAreaTransform == null)
+                    {
+                        GameObject playZoneAreaGO = new GameObject("PlayZoneArea", typeof(RectTransform));
+                        playZoneAreaGO.transform.SetParent(canvas.transform, false);
+                        playZoneAreaTransform = playZoneAreaGO.transform;
+                    }
+                    PlayZoneArea = playZoneAreaTransform;
+
+                    GameObject playZoneManagerGO = Instantiate(playZoneManagerPrefab, canvas.transform);
+                    PlayZoneManager = playZoneManagerGO.GetComponent<PlayZoneManager>();
+                    PlayZoneManager.playZoneArea = PlayZoneArea;
+                    PlayZoneManager.handManager = HandManager;
+                    PlayZoneManager.deckManager = DeckManager;
+
+                    var digestButtonGO = canvas.transform.Find("DigestButton");
+                    if (digestButtonGO != null)
+                    {
+                        Button digestButton = digestButtonGO.GetComponent<Button>();
+                        PlayZoneManager.digestButton = digestButton;
+                        digestButton.onClick.AddListener(PlayZoneManager.OnDigestButtonClicked);
+                    }
+                    else
+                    {
+                        Debug.LogError("DigestButton not found under Canvas!");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Cannot find the PlayZoneManager prefab");
+                }
+            }
+            else
+            {
+                // Always re-link playZoneArea in the new scene
                 Transform playZoneAreaTransform = canvas.transform.Find("PlayZoneArea");
                 if (playZoneAreaTransform == null)
                 {
                     GameObject playZoneAreaGO = new GameObject("PlayZoneArea", typeof(RectTransform));
                     playZoneAreaGO.transform.SetParent(canvas.transform, false);
                     playZoneAreaTransform = playZoneAreaGO.transform;
-                    // You can add a HorizontalLayoutGroup here too if needed!
                 }
                 PlayZoneArea = playZoneAreaTransform;
-
-                // Instantiate PlayZoneManager under Canvas (for UI)
-                GameObject playZoneManagerGO = Instantiate(playZoneManagerPrefab, canvas.transform);
-                PlayZoneManager = playZoneManagerGO.GetComponent<PlayZoneManager>();
-
-                // Assign dependencies
                 PlayZoneManager.playZoneArea = PlayZoneArea;
                 PlayZoneManager.handManager = HandManager;
                 PlayZoneManager.deckManager = DeckManager;
 
-                // Find the DigestButton under Canvas
                 var digestButtonGO = canvas.transform.Find("DigestButton");
                 if (digestButtonGO != null)
                 {
                     Button digestButton = digestButtonGO.GetComponent<Button>();
                     PlayZoneManager.digestButton = digestButton;
+                    digestButton.onClick.RemoveAllListeners();
                     digestButton.onClick.AddListener(PlayZoneManager.OnDigestButtonClicked);
                 }
                 else
                 {
                     Debug.LogError("DigestButton not found under Canvas!");
                 }
-            }
-
-            // --- HandManager instantiation ---
-            GameObject handManagerPrefab = Resources.Load<GameObject>("Prefabs/HandManager");
-            GameObject handPositionPrefab = Resources.Load<GameObject>("Prefabs/HandPosition");
-            if (handManagerPrefab == null)
-            {
-                Debug.Log("cannot find the HandManager prefab");
-            }
-            else if (handPositionPrefab == null)
-            {
-                Debug.LogError("Cannot find the HandPosition prefab in Resources/Prefabs!");
-            }
-            else
-            {
-                Canvas canvas = FindObjectOfType<Canvas>();
-                if (canvas == null)
-                {
-                    Debug.LogError("No Canvas found in the scene! Cannot create HandPosition.");
-                    return;
-                }
-
-                // Find or create HandPosition under Canvas
-                Transform handPositionTransform = canvas.transform.Find("HandPosition");
-                RectTransform handRect;
-                if (handPositionTransform == null)
-                {
-                    // Instantiate HandPosition prefab under Canvas
-                    GameObject handPositionGO = Instantiate(handPositionPrefab, canvas.transform);
-                    handPositionGO.name = "HandPosition"; // Ensure consistent naming
-                    handRect = handPositionGO.GetComponent<RectTransform>();
-                }
-                else
-                {
-                    handRect = handPositionTransform.GetComponent<RectTransform>();
-                }
-
-                // Instantiate HandManager and assign handTransform
-                GameObject handManagerGO = Instantiate(handManagerPrefab, transform.position, Quaternion.identity, transform);
-                HandManager = handManagerGO.GetComponent<HandManager>();
-                HandManager.handTransform = handRect;
-            }
-
-            // --- AudioManager instantiation ---
-            GameObject audioManagerPrefab = Resources.Load<GameObject>("Prefabs/AudioManager");
-            if (audioManagerPrefab == null)
-            {
-                Debug.Log("cannot find the Audio manager prefab");
-            }
-            else
-            {
-                GameObject audioManagerGO = Instantiate(audioManagerPrefab, transform.position, Quaternion.identity, transform);
-                AudioManager = audioManagerGO.GetComponent<AudioManager>();
-            }
-
-            // --- DeckManager instantiation ---
-            GameObject deckManagerPrefab = Resources.Load<GameObject>("Prefabs/DeckManager");
-            if (deckManagerPrefab == null)
-            {
-                Debug.Log("cannot find the DECK manager prefab");
-            }
-            else
-            {
-                GameObject deckManagerGO = Instantiate(deckManagerPrefab, transform.position, Quaternion.identity, transform);
-                DeckManager = deckManagerGO.GetComponent<DeckManager>();
             }
         }
     }
