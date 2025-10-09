@@ -10,6 +10,7 @@ namespace DigestQuest
         public Transform playZoneArea;
         public int maxCardsInPlay = 2;
         public List<GameObject> cardsInPlay = new List<GameObject>();
+        public List<Card> cardDataInPlay = new List<Card>();
         public HandManager handManager;
         public DeckManager deckManager;
 
@@ -21,97 +22,109 @@ namespace DigestQuest
         void Start()
         {
             Debug.Log($"[Start] PlayZoneManager on {gameObject.name}, InstanceID: {GetInstanceID()}");
-            if (deckManager == null)
-                deckManager = GameManager.Instance.DeckManager;
-            if (handManager == null)
-                handManager = GameManager.Instance.HandManager;
-            Debug.Log($"[PlayZoneManager] playZoneArea in Start: {playZoneArea}");
-            if (playZoneArea == null)
-                Debug.LogError("[PlayZoneManager] playZoneArea is NULL in Start! Check assignment.");
+        }
+
+        public void RelinkSceneReferences(Canvas canvas)
+        {
+            // Wire play zone area
+            Transform playZoneAreaTransform = canvas.transform.Find("PlayZoneArea");
+            playZoneArea = playZoneAreaTransform;
+
+            // Wire DigestButton
+            Transform digestButtonTransform = canvas.transform.Find("DigestButton");
+            if (digestButtonTransform != null)
+            {
+                digestButton = digestButtonTransform.GetComponent<Button>();
+                digestButton.onClick.RemoveAllListeners();
+                digestButton.onClick.AddListener(OnDigestButtonClicked);
+                Debug.Log("DigestButton wired to OnDigestButtonClicked in PlayZoneManager.");
+            }
+            else
+            {
+                Debug.LogError("DigestButton not found under Canvas!");
+            }
         }
 
         public void PlayCard(GameObject card)
         {
-            Debug.Log($"[PlayCard] PlayZoneManager on {gameObject.name} (InstanceID: {GetInstanceID()}) BEFORE: cardsInPlay.Count={cardsInPlay.Count}");
             if (cardsInPlay.Count >= maxCardsInPlay)
                 return;
 
-            Debug.Log("you have decided to move this card to the playzone:" + card.name);
-
-            // Remove from hand first
             handManager.RemoveCardFromHand(card);
 
-            // Add to play zone list
+            Card cardData = card.GetComponent<CardDisplay>().card;
+            if (!cardDataInPlay.Contains(cardData))
+                cardDataInPlay.Add(cardData);
+
             if (!cardsInPlay.Contains(card))
-            {
-                Debug.Log("added the card to the pLAYZONE LIST ");
                 cardsInPlay.Add(card);
-            }
 
-            //debug purpose
-            Debug.Log($"playZoneArea ref: {playZoneArea}, parent: {playZoneArea?.parent}");
-
-            // Move in UI
             card.transform.SetParent(playZoneArea, false);
+            UpdatePlayZoneVisuals();
+        }
 
-            //debug for after setting parent
-            Debug.Log($"Card '{card.name}' new parent: {card.transform.parent}, playZoneArea: {playZoneArea}");
+        public void UpdatePlayZoneVisuals()
+        {
+            int cardCount = cardsInPlay.Count;
+            if (cardCount == 0 || playZoneArea == null) return;
 
-            Debug.Log($"[PlayCard] PlayZoneManager on {gameObject.name} (InstanceID: {GetInstanceID()}) AFTER: cardsInPlay.Count={cardsInPlay.Count}");
+            float cardWidth = cardsInPlay[0].GetComponent<RectTransform>().rect.width;
+            float padding = 30f;
+            float totalCardWidth = cardCount * cardWidth + (cardCount - 1) * padding;
+            float startX = -totalCardWidth / 2f + cardWidth / 2f;
 
-            if (cardsInPlay.Count == maxCardsInPlay)
+            for (int i = 0; i < cardCount; i++)
             {
-                Debug.Log("2 cards in play! Resolve logic here.");
+                GameObject cardGO = cardsInPlay[i];
+                RectTransform cardRect = cardGO.GetComponent<RectTransform>();
+                cardRect.SetParent(playZoneArea, false);
+
+                float x = startX + i * (cardWidth + padding);
+                cardRect.anchoredPosition = new Vector2(x, 0);
+                cardRect.localRotation = Quaternion.identity;
+                cardRect.SetSiblingIndex(i);
             }
         }
 
         public void ResetPlayZone()
         {
-            Debug.Log($"[ResetPlayZone] PlayZoneManager on {gameObject.name} (InstanceID: {GetInstanceID()})");
             foreach (var card in cardsInPlay)
                 Destroy(card);
             cardsInPlay.Clear();
+            cardDataInPlay.Clear();
         }
 
         public void RemoveCardFromPlay(GameObject card)
         {
-            Debug.Log($"[RemoveCardFromPlay] PlayZoneManager on {gameObject.name} (InstanceID: {GetInstanceID()})");
-            if (cardsInPlay.Contains(card))
-                cardsInPlay.Remove(card);
-
-            // Move card back to hand (UI and logic)
+            int idx = cardsInPlay.IndexOf(card);
+            if (idx >= 0)
+            {
+                cardsInPlay.RemoveAt(idx);
+                cardDataInPlay.Remove(card.GetComponent<CardDisplay>().card);
+            }
             handManager.AddExistingCardToHand(card);
+            UpdatePlayZoneVisuals();
         }
 
         public void OnDigestButtonClicked()
         {
-            Debug.Log($"[Digest] PlayZoneManager on {gameObject.name} (InstanceID: {GetInstanceID()}), cardsInPlay.Count: {cardsInPlay.Count}");
             int totalPoints = 0;
-
-            // Make a copy of the list to avoid modification during iteration
             List<GameObject> digestingCards = new List<GameObject>(cardsInPlay);
 
             foreach (GameObject cardObj in digestingCards)
             {
-                // Get Card data (if needed for points)
                 Card cardData = cardObj.GetComponent<CardDisplay>().card;
-                Debug.Log("HERE ARE CARDS YOU ARE DIGESTING: " + (cardData != null ? cardData.name : "null"));
                 if (cardData != null)
                 {
-                    totalPoints += 10; //SET 10 AS A DUMMY VALUE FOR NOW
+                    totalPoints += 10; // dummy value
                 }
 
-                // Remove from play zone list
                 cardsInPlay.Remove(cardObj);
-
-                // Destroy the card UI object
+                cardDataInPlay.Remove(cardData);
                 Destroy(cardObj);
             }
 
-            //update the global score for the player 
             Player.Instance.AddScore(totalPoints);
-            // Optionally update score
-            Debug.Log("Digest complete! Total points: " + totalPoints);
         }
     }
 }

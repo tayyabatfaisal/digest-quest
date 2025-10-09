@@ -5,9 +5,24 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 78c1ca4ae3d734763b84b0a8904fce8e
+  - enabled: 1
+    path: Assets/Scenes/Mouth.unity
+    guid: 312ce73a3d52542a29af69e0a5629fa8
+  - enabled: 1
+    path: Assets/Scenes/Stomach.unity
+    guid: 177b1f983a4c74282be7378aa4a213eb
+  - enabled: 1
+    path: Assets/Scenes/Intestine.unity
+    guid: 8475cd5e8898147ef954fb308acb82dc
+  - enabled: 1
+    path: Assets/Scenes/End.unity
+    guid: 86353525eb4ca44c9a33cfae27277e25
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
