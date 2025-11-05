@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca378aed255f44522af3be94ed5c4660, type: 3}
   m_Name: HCL
   m_EditorClassIdentifier: Assembly-CSharp::DigestQuest.Card
-  cardName: HCL
+  cardName: Pepsin
   cardType: 1
   description: 
   stageRequirement: 

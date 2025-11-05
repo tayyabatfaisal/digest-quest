@@ -61,6 +61,8 @@ namespace DigestQuest
 
             card.transform.SetParent(playZoneArea, false);
             UpdatePlayZoneVisuals();
+
+
         }
 
         public void UpdatePlayZoneVisuals()
@@ -123,6 +125,9 @@ namespace DigestQuest
                 cardDataInPlay.Remove(cardData);
                 Destroy(cardObj);
             }
+
+
+            
 
             Player.Instance.AddScore(totalPoints);
         }

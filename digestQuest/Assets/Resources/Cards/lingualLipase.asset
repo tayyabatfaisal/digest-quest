@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca378aed255f44522af3be94ed5c4660, type: 3}
   m_Name: lingualLipase
   m_EditorClassIdentifier: Assembly-CSharp::DigestQuest.Card
-  cardName: Lingual Lipase
+  cardName: 'Gastrin '
   cardType: 0
   description: 
   stageRequirement: 
